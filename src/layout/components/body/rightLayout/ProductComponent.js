@@ -64,7 +64,7 @@ class Product extends React.Component {
 					method: 'GET'
 				})
 				.then(res => res.json())
-				.then(item => this.setState({listItem: state.concat([item[0]]), visible: false}))
+				.then(item => this.setState({listItem: [...this.state.listItem, item[0]], visible: false}))
 				.catch(err => console.log(err))
 			})
 			.catch(err => console.log(err));
