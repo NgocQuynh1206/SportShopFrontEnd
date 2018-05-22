@@ -3,7 +3,8 @@ import Card from './Card'
 import {Layout, Form, Button, List} from 'antd';
 import Modal from './Modal'
 import urlConfig from '../../../../route/urlConfig';
-const {Content} = Layout
+import {Redirect} from 'react-router-dom'
+const {Content} = Layout;
 const url = `${urlConfig}/api/sanpham`;
 
 class Product extends React.Component {
@@ -16,14 +17,24 @@ class Product extends React.Component {
 	}
 
 	componentDidMount() {
-		fetch(url)
-		.then(response => response.json())
-		.then(item => this.setState({listItem: item}))
-		.catch(err => console.log(err));
+		if (localStorage.token) {
+			fetch(url, {
+				headers: {
+					Authorization: `Bearer ${localStorage.token}`,
+				}
+			})
+			.then(response => response.json())
+			.then(item => this.setState({listItem: item}))
+			.catch(err => console.log(err));
+		}
 	}
 
 	editCard = (data, index) => {
-		fetch(url)
+		fetch(url, {
+			headers: {
+				Authorization: `Bearer ${localStorage.token}`,
+			}
+		})
 		.then(response => response.json())
 		.then(item => this.setState({listItem: item}))
 		.catch(err => console.log(err));
@@ -43,7 +54,6 @@ class Product extends React.Component {
 	}
 	handleOk = () => {
 		const form = this.formRef.props.form;
-		const {state} = this;
 
 		form.validateFields((err, values) => {
 			if (err) {
@@ -53,7 +63,8 @@ class Product extends React.Component {
 			fetch(url, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${localStorage.token}`,
 				},
 				body: JSON.stringify(values),
 			})
@@ -82,6 +93,10 @@ class Product extends React.Component {
 		};
 
 		render() {
+			const token = localStorage.token;
+			if (!token) {
+				return <Redirect to="/" />
+			}
 			return (
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 280 }}>
 					<div style={{
