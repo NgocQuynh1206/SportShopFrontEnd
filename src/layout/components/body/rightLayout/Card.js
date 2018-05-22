@@ -62,6 +62,7 @@ class CardComponent extends React.Component {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.token}`,
 				},
 				body: JSON.stringify(values),
 			})

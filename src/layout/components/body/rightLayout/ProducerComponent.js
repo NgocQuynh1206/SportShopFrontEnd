@@ -56,7 +56,12 @@ export default class Producer extends React.Component {
 
   	delete = (maloai) => {
   		const {producers} = this.state;
-  		fetch(`${url}/${maloai}`, {method: "DELETE"})
+  		fetch(`${url}/${maloai}`, {
+  			method: "DELETE",
+  			headers: {
+				Authorization: `Bearer ${localStorage.token}`,
+			}
+  		})
 		.then(res => res.json())
 		.then(() => this.setState({producers: producers.filter(p => p.maloai !== maloai)}))
 		.catch(err => console.log(err));
@@ -66,7 +71,10 @@ export default class Producer extends React.Component {
   		const {producers, tenloai} = this.state;
   		fetch(`${url}`, {
   			method: 'POST', 
-  			headers: {'Content-Type': 'application/json'},
+  			headers: {
+  				'Content-Type': 'application/json',
+  				Authorization: `Bearer ${localStorage.token}`,
+  			},
   			body: JSON.stringify({"tenloai": tenloai}),
   		})
 		.then(res => res.json())
@@ -81,7 +89,10 @@ export default class Producer extends React.Component {
   		const {producers, tenloai, maloai} = this.state;
   		fetch(`${url}/${maloai}`, {
   			method: 'PUT', 
-  			headers: {'Content-Type': 'application/json'},
+  			headers: {
+  				'Content-Type': 'application/json',
+  				Authorization: `Bearer ${localStorage.token}`,
+  			},
   			body: JSON.stringify({"tenloai": tenloai}),
   		})
 		.then(res => res.json())

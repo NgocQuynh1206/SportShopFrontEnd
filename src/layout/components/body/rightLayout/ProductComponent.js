@@ -41,7 +41,12 @@ class Product extends React.Component {
 	}
 
 	deleteCard = (masp) => {
-  		fetch(`${url}/${masp}`, {method: "DELETE"})
+  		fetch(`${url}/${masp}`, {
+  			method: "DELETE",
+  			headers: {
+				Authorization: `Bearer ${localStorage.token}`,
+			}
+  		})
 		.then(res => res.json())
 		.then(() => this.setState({listItem: this.state.listItem.filter(data => data.masanpham !== masp)}))
 		.catch(err => console.log(err));
