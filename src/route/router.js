@@ -6,6 +6,7 @@ import ProducerBody from '../layout/components/body/rightLayout/ProducerComponen
 import ProductBody from '../layout/components/body/rightLayout/ProductComponent';
 import UserBody from '../layout/components/body/rightLayout/UserComponent';
 
+
 // Component
 const NotFound = () => (
 	<div>

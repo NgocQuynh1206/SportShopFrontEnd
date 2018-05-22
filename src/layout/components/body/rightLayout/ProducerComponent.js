@@ -1,7 +1,6 @@
 import React from 'react';
 import {Layout, Button, Modal, Input, Table, Divider, Popconfirm} from 'antd';
 import urlConfig from '../../../../route/urlConfig';
-import {Redirect} from 'react-router-dom'
 const {Content} = Layout
 const url = `${urlConfig}/api/loaisanpham`;
 
@@ -18,19 +17,13 @@ export default class Producer extends React.Component {
 	}
 
 	componentDidMount() {
-		if (localStorage.token) {
-			fetch(url, {
-			headers: {
-				Authorization: `Bearer ${localStorage.token}`,
-			}
-			})
-			.then(res => res.json())
-			.then(items => {
-				items.map(i => i.key = i.maloai);
-				this.setState({producers: items});
-			})
-			.catch(err => console.log(err))}
-		
+		fetch(url)
+		.then(res => res.json())
+		.then(items => {
+			items.map(i => i.key = i.maloai);
+			this.setState({producers: items});
+		})
+		.catch(err => console.log(err))
 	}
 
 	showModal = (tenloai = null, maloai = null) => {
@@ -96,10 +89,6 @@ export default class Producer extends React.Component {
   	}
 
 	render() {
-		const token = localStorage.token;
-		if (!token) {
-			return <Redirect to="/" />
-		}
 		const col = [{key: -1},{key: -2},{
 		  title: 'ID',
 		  dataIndex: 'maloai',

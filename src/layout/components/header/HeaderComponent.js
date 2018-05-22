@@ -1,55 +1,27 @@
 import React from 'react';
-import {Menu, Icon, Layout, Modal, message, Form} from 'antd';
+import {Menu, Icon, Layout, Form } from 'antd';
 import {Link} from 'react-router-dom';
-import LoginModal from './LoginModal'
+import Modal from './LoginModal'
 import urlConfig from '../../../route/urlConfig';
 const {Header} = Layout;
-const SubMenu = Menu.SubMenu;
 const url = `${urlConfig}/api/login`;
-
 class HeaderComponent extends React.Component {
 	constructor() {
-		super()
+		super();
 		this.state = {
 			visible: false,
-			login_visible: false,
-			email: '',
-		}
-	}
-	onChangeEmail = (e) => {
-		this.setState({email: e.target.value})
-	}
-	cancel = () => {
-		this.setState({visible: false, check: false});
-	}
-	handleOk = () => {
-		fetch(`${urlConfig}/api/createbyadmin`, {
-			method: 'POST', 
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify({email: this.state.email}),
-  		})
-  		.then(res => res.json())
-		.then(result => {
-			if (result.error) {
-				message.error(result.error,2);
-			}
-			else {
-				message.success('Invitation successful!',2);
-			}
-		})
-		.catch(err => console.log(err));
-		this.setState({visible: false});
+		};
 	}
 
 	showModal = () => {
 		this.setState({
-			login_visible: true,
+			visible: true,
 		});
 	}
 
 	handleCancel = () => {
 		this.setState({
-			login_visible: false,
+			visible: false,
 		});
 	}
 	handleLogin = () => {
@@ -59,6 +31,7 @@ class HeaderComponent extends React.Component {
 			if (err) {
 				return;
 			}
+			console.log(values)
 
 			fetch(url, {
 				method: 'POST',
@@ -69,11 +42,7 @@ class HeaderComponent extends React.Component {
 			})
 			.then(response => response.json())
 			.then(data => {
-				localStorage.setItem("token", data.token);
-				this.props.setToken();
-				this.setState ({
-					login_visible: false
-				})
+				console.log(data)
 			});
 		});
 	}
@@ -86,6 +55,13 @@ class HeaderComponent extends React.Component {
 		return (
 			<Header className="header">
 				<div className="logo" />
+
+				<Modal
+					wrappedComponentRef={this.saveFormRef}
+					visible={this.state.visible}
+					onCancel={this.handleCancel}
+					onOk={this.handleLogin}
+				/>
 
 				<Menu
 				theme="dark"
@@ -114,38 +90,9 @@ class HeaderComponent extends React.Component {
 						<span><Icon type="user"/>Admin</span>
 						<Link to='/admin' />
 					</Menu.Item>
-					<Menu.Item key="6" style={{float: 'right'}} onClick={() => this.setState({visible: true})}>
-						<span><Icon type="user-add"/>Invite</span>
+					<Menu.Item onClick={this.showModal} key="6" style={{float: 'right'}}>
+						<span>Log in</span>
 					</Menu.Item>
-					<Modal
-			          title="Invitation"
-			          style={{marginLeft: '60%'}}
-			          visible={this.state.visible}
-			          onOk={() => this.handleOk()}
-			          onCancel={() => this.cancel()}
-			        >
-			        	<div>Email {' '}<input value={this.state.email} type="email" style={{width: '80%', marginLeft: '20px'}} onChange={this.onChangeEmail}/>
-			        	</div>
-			        </Modal>
-			        {(this.props.token) ? (
-				        	<SubMenu key="sub1" style={{float: 'right'}} title={<span><Icon style={{ fontSize: 24 }} type="contacts"/></span>}>
-				        		<Menu.Item key="7">Details</Menu.Item>
-					            <Menu.Item key="8" onClick={this.props.removeToken}>Log out</Menu.Item>
-				        	</SubMenu>
-			        	) : (
-			        	<Menu.Item onClick={this.showModal} key="7" style={{float: 'right'}}>
-							<span>Log in</span>
-						</Menu.Item>
-						
-			        )}
-			        <LoginModal
-							wrappedComponentRef={this.saveFormRef}
-							visible={this.state.login_visible}
-							onCancel={this.handleCancel}
-							onOk={this.handleLogin}
-					/>
-
-			         
 
 				</Menu>
 			</Header>

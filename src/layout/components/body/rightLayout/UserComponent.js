@@ -1,7 +1,6 @@
 import React from 'react';
 import {Layout, Table, Popconfirm} from 'antd';
 import urlConfig from '../../../../route/urlConfig';
-import {Redirect} from 'react-router-dom'
 const {Content} = Layout
 const url = `${urlConfig}/api/user`;
 
@@ -13,25 +12,18 @@ export default class User extends React.Component {
 		}
 	}
 	componentDidMount() {
-		fetch(url, {
-			headers: {
-				Authorization: `Bearer ${localStorage.token}`,
-			}
-		})
+		fetch(url)
 		.then(res => res.json())
 		.then(data => {
 			data.map(element => element.key = element.id);
-			this.setState({users: data});
+			this.setState({users: data})
 		})
 		.catch(err => console.log(err))
 	}
 
 	onDelete = (key) => {
 		fetch(`${url}/${key}`, {
-			method: "DELETE",
-			headers: {
-				Authorization: `Bearer ${localStorage.token}`,
-			}
+			method: "DELETE"
 		})
 		.then(res => res.json())
 		.then(data => {
@@ -42,10 +34,6 @@ export default class User extends React.Component {
 	}
 
 	render() {
-		const token = localStorage.token;
-		if (!token) {
-			return <Redirect to="/" />
-		}
 		const columns = [{
 			title: 'Email',
 			dataIndex: 'email',

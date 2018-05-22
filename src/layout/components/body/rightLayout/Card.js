@@ -11,7 +11,6 @@ class CardComponent extends React.Component {
 		super();
 		this.state = {
 			visible: false,
-			detail: false,
 		};
 	}
 
@@ -48,7 +47,6 @@ class CardComponent extends React.Component {
 	handleEditCancel = e => {
 		this.setState({
 			visible: false,
-			detail: false,
 		});
 	};
 	handleEditOk = () => {
@@ -100,8 +98,8 @@ class CardComponent extends React.Component {
 				<Card
 					hoverable
 					style={{ width: 240 }}
-					cover={<img alt={this.props.infoCard.tensanpham} src={this.props.infoCard.hinhanh} height="100%"
-					width="100%" onClick={() => this.setState({detail: true})}/>}
+					cover={<img alt= {this.props.infoCard.tensanpham} src= {this.props.infoCard.hinhanh} height="225"
+					width="348"/>}
 					actions={[<Icon onClick={this.showEditModal} type="edit" />, <Icon onClick={this.showDeleteModal} type="delete" />]}
 				>
 				<Meta
@@ -118,47 +116,8 @@ class CardComponent extends React.Component {
 					editCard={this.props.editCard}
 					deleteCard={this.props.deleteCard}
 				/>
-
-				<Modal
-					title={this.props.infoCard.tensanpham}
-          			visible={this.state.detail}
-          			onOk={this.handleEditCancel}
-          			onCancel={this.handleEditCancel}
-				>
-				<table>
-					<tr>
-					<td style={{width: '200px', height: '250px'}}><img alt={this.props.infoCard.tensanpham} src={this.props.infoCard.hinhanh} width="90%%" height="100%"/></td>
-					<td>
-					<tr>
-						<label>ID: </label>
-						<span>{this.props.infoCard.masanpham}</span>
-					</tr>
-					<tr>
-						<label>Price: </label>
-						<span>{this.props.infoCard.gia}</span>
-					</tr>
-					<tr>
-						<label>Quantity: </label>
-						<span>{this.props.infoCard.soluong}</span>
-					</tr>
-					<tr>
-						<label>Looked: </label>
-						<span>{this.props.infoCard.luotxem}</span>
-					</tr>
-					<tr>
-						<label>Sold: </label>
-						<span>{this.props.infoCard.daban}</span>
-					</tr>
-					<tr>
-						<label>Date: </label>
-						<span>{this.props.infoCard.ngaynhap}</span>
-					</tr>
-					</td>
-					</tr>
-				</table>
-				</Modal>
 				</Card>
-				
+		
 			)
 	}
 	
