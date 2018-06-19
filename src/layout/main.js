@@ -20,6 +20,8 @@ export default class RenderingMain extends React.Component {
 
 	removeToken = () => {
 		localStorage.removeItem("token")
+		localStorage.removeItem("id")
+		localStorage.removeItem("role")
 		this.setState({token: null})
 	}
 

@@ -31,10 +31,10 @@ class HeaderComponent extends React.Component {
   		.then(res => res.json())
 		.then(result => {
 			if (result.error) {
-				message.error(result.error,2);
+				message.error(result.error);
 			}
 			else {
-				message.success('Invitation successful!',2);
+				message.success('Invitation successful!');
 			}
 		})
 		.catch(err => console.log(err));
@@ -70,9 +70,16 @@ class HeaderComponent extends React.Component {
 			.then(response => response.json())
 			.then(data => {
 				if (data.token) {
-					localStorage.setItem("token", data.token);
-					this.props.setToken();
-					message.success('Login success!');
+					if ('' + data.role !== '1') {
+						message.error('Access denined!');
+					}
+					else {
+						localStorage.setItem("id", data.id);
+						localStorage.setItem("token", data.token);
+						localStorage.setItem("role", data.role);
+						this.props.setToken();
+						message.success('Login success!');
+					}
 				}
 				else {
 					message.error('Login fail!');
@@ -91,6 +98,7 @@ class HeaderComponent extends React.Component {
 	logOut = () => {
 		this.props.removeToken();
 		message.success('Logout success!');
+		window.location.replace("/");
 	}
 	render () {
 		return (
@@ -119,10 +127,18 @@ class HeaderComponent extends React.Component {
 						<span>User</span>
 						<Link to='/user' />
 					</Menu.Item>
+					<Menu.Item key="9">
+						<span>Orders</span>
+						<Link to='/orders' />
+					</Menu.Item>
+					<Menu.Item key="5">
+						<span>Statistic</span>
+						<Link to='/statistic' />
+					</Menu.Item>
 
 					{(this.props.token) ? (
 				        	<SubMenu key="sub1" style={{float: 'right'}} title={<span><Icon style={{ fontSize: 24 }} type="contacts"/></span>}>
-				        		<Menu.Item key="7">Details</Menu.Item>
+				        		<Menu.Item key="7"><span>Details</span><Link to='/detail' /></Menu.Item>
 					            <Menu.Item key="8" onClick={this.logOut}>Log out</Menu.Item>
 				        	</SubMenu>
 			        	) : (

@@ -24,7 +24,11 @@ class Product extends React.Component {
 				}
 			})
 			.then(response => response.json())
-			.then(item => this.setState({listItem: item}))
+			.then(item =>{
+				item.forEach(element => {var date = new Date(element.ngaynhap); element.ngaynhap = date.toLocaleDateString()});	
+				item.map(element => element.gia = element.gia.toLocaleString())
+				this.setState({listItem: item})
+			})
 			.catch(err => console.log(err));
 		}
 	}

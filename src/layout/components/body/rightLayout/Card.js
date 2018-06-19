@@ -12,6 +12,7 @@ class CardComponent extends React.Component {
 		this.state = {
 			visible: false,
 			detail: false,
+			product: {}
 		};
 	}
 
@@ -41,7 +42,11 @@ class CardComponent extends React.Component {
 		})
 			.then(response => response.json())
 			.then(data => {
+				data.forEach(element => {var date = new Date(element.ngaynhap); element.ngaynhap = date.toLocaleDateString()});
 				this.setFormFields(data[0]);
+				this.setState({
+					product: data[0]
+				})
 			})
 			.catch(err => console.error(err));
 	};
@@ -58,6 +63,10 @@ class CardComponent extends React.Component {
 			if (err) {
 				return;
 			}
+
+			values.masanpham = this.state.product.masanpham
+			values.nhasanxuat = this.state.product.nhasanxuat
+			//values.ngaynhap = moment(values.ngaynhap, "DD/MM/YYYY").format('YYYY-MM-DD')
 			fetch(`${url}/${id}`, {
 				method: 'PUT',
 				headers: {
@@ -68,6 +77,7 @@ class CardComponent extends React.Component {
 			})
 				.then(response => response.json())
 				.then(data => {
+					console.log(values);
 					this.props.editCard(data, this.props.index);
 				})
 				.catch(err => this.openNotification('error', err));
@@ -101,7 +111,7 @@ class CardComponent extends React.Component {
 				<Card
 					hoverable
 					style={{ width: 240 }}
-					cover={<img alt={this.props.infoCard.tensanpham} src={this.props.infoCard.hinhanh} height="100%"
+					cover={<img alt={this.props.infoCard.tensanpham} src={this.props.infoCard.hinhanh} height="300px"
 					width="100%" onClick={() => this.setState({detail: true})}/>}
 					actions={[<Icon onClick={this.showEditModal} type="edit" />, <Icon onClick={this.showDeleteModal} type="delete" />]}
 				>
@@ -127,35 +137,24 @@ class CardComponent extends React.Component {
           			onCancel={this.handleEditCancel}
 				>
 				<table>
+					<tbody>
 					<tr>
 					<td style={{width: '200px', height: '250px'}}><img alt={this.props.infoCard.tensanpham} src={this.props.infoCard.hinhanh} width="90%%" height="100%"/></td>
 					<td>
-					<tr>
-						<label>ID: </label>
-						<span>{this.props.infoCard.masanpham}</span>
-					</tr>
-					<tr>
-						<label>Price: </label>
-						<span>{this.props.infoCard.gia}</span>
-					</tr>
-					<tr>
-						<label>Quantity: </label>
-						<span>{this.props.infoCard.soluong}</span>
-					</tr>
-					<tr>
-						<label>Looked: </label>
-						<span>{this.props.infoCard.luotxem}</span>
-					</tr>
-					<tr>
-						<label>Sold: </label>
-						<span>{this.props.infoCard.daban}</span>
-					</tr>
-					<tr>
-						<label>Date: </label>
-						<span>{this.props.infoCard.ngaynhap}</span>
-					</tr>
+						ID: {this.props.infoCard.masanpham}<br/>
+										
+						Price: {this.props.infoCard.gia}<br/>
+										
+						Quantity: {this.props.infoCard.soluong}<br/>
+										
+						Looked: {this.props.infoCard.luotxem}<br/>
+										
+						Sold: {this.props.infoCard.daban}<br/>
+									
+						Date: {this.props.infoCard.ngaynhap}<br/>		
 					</td>
 					</tr>
+					</tbody>
 				</table>
 				</Modal>
 				</Card>
