@@ -1,4 +1,4 @@
 
 
-const url = 'http://localhost:8000';
-export default url;
++const url = 'https://api-sportshop.herokuapp.com/';
++export default url;
