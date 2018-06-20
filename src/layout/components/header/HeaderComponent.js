@@ -98,7 +98,7 @@ class HeaderComponent extends React.Component {
 	logOut = () => {
 		this.props.removeToken();
 		message.success('Logout success!');
-		window.location.replace("/");
+		<Link to='/' />
 	}
 	render () {
 		return (
